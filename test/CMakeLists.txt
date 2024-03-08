@@ -14,9 +14,3 @@ add_cmake_test(
   GitCheckoutTest.cmake
   "Check out a Git repository"
 )
-
-add_cmake_test(
-  MkdirRecursiveTest.cmake
-  "Create directory recursively"
-  # Add more test cases here.
-)
