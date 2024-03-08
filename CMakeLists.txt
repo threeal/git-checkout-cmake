@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.19)
 
 project(
-  MyMkdir
+  GitCheckout
   VERSION 0.0.0
-  DESCRIPTION "A starter CMake package for creating directories recursively"
-  HOMEPAGE_URL https://github.com/threeal/cmake-starter
+  DESCRIPTION "Clone and check out a Git repository from your CMake project"
+  HOMEPAGE_URL https://github.com/threeal/git-checkout-cmake
   LANGUAGES NONE
 )
 
@@ -25,15 +25,15 @@ if(NOT SUBPROJECT)
 
   include(CMakePackageConfigHelpers)
   write_basic_package_version_file(
-    MyMkdirConfigVersion.cmake
+    GitCheckoutConfigVersion.cmake
     COMPATIBILITY SameMajorVersion
   )
 
   install(
     FILES
       cmake/MkdirRecursive.cmake
-      cmake/MyMkdirConfig.cmake
-      ${CMAKE_CURRENT_BINARY_DIR}/MyMkdirConfigVersion.cmake
-    DESTINATION lib/cmake/MyMkdir
+      cmake/GitCheckoutConfig.cmake
+      ${CMAKE_CURRENT_BINARY_DIR}/GitCheckoutConfigVersion.cmake
+    DESTINATION lib/cmake/GitCheckout
   )
 endif()
