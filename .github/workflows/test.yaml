@@ -1,0 +1,21 @@
+name: Test
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  test-project:
+    name: Test Project
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+
+      - name: Configure Project
+        uses: threeal/cmake-action@v1.3.0
+        with:
+          options: BUILD_TESTING=ON
+
+      - name: Test Project
+        run: ctest -C debug --output-on-failure --test-dir build --no-tests=error
