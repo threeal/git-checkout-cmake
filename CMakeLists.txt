@@ -31,7 +31,7 @@ if(NOT SUBPROJECT)
 
   install(
     FILES
-      cmake/MkdirRecursive.cmake
+      cmake/GitCheckout.cmake
       cmake/GitCheckoutConfig.cmake
       ${CMAKE_CURRENT_BINARY_DIR}/GitCheckoutConfigVersion.cmake
     DESTINATION lib/cmake/GitCheckout
