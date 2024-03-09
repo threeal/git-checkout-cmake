@@ -13,4 +13,6 @@ endfunction()
 add_cmake_test(
   GitCheckoutTest.cmake
   "Check out a Git repository"
+  "Check out an invalid Git repository"
+  "Check out an invalid Git repository with error variable specified"
 )
