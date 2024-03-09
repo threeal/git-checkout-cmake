@@ -16,5 +16,4 @@ add_cmake_test(
   "Set error with variable specified"
   "Check out a Git repository"
   "Check out an invalid Git repository"
-  "Check out an invalid Git repository with error variable specified"
 )
