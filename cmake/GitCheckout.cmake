@@ -36,7 +36,7 @@ function(git_checkout URL)
 
   # Clones the Git repository.
   execute_process(
-    COMMAND git clone --no-checkout ${URL} ${ARG_DIRECTORY}
+    COMMAND git clone --filter=blob:none --no-checkout ${URL} ${ARG_DIRECTORY}
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
