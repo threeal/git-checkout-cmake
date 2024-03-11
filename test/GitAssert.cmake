@@ -8,7 +8,7 @@ function(assert_git_complete_checkout DIRECTORY)
   endif()
 
   execute_process(
-    COMMAND git -C ${DIRECTORY} diff --no-patch --exit-code
+    COMMAND git -C ${DIRECTORY} diff --no-patch --exit-code HEAD
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
