@@ -35,6 +35,21 @@ if("Check out an invalid Git repository" MATCHES ${TEST_MATCHES})
   endif()
 endif()
 
+if("Check out a Git repository to a specific directory" MATCHES ${TEST_MATCHES})
+  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
+
+  if(EXISTS some-directory)
+    file(REMOVE_RECURSE some-directory)
+  endif()
+
+  include(GitCheckout)
+  git_checkout(https://github.com/threeal/project-starter DIRECTORY some-directory)
+
+  if(NOT EXISTS some-directory)
+    message(FATAL_ERROR "The 'some-directory' directory should exist")
+  endif()
+endif()
+
 if("Check out a Git repository on a specific ref" MATCHES ${TEST_MATCHES})
   math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
 
