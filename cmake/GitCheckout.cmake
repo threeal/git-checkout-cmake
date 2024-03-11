@@ -31,8 +31,9 @@ endmacro()
 # Optional arguments:
 #   - DIRECTORY: The path of the directory to check out the Git repository.
 #   - REF: The reference (branch, tag, or commit) to check out the Git repository.
+#   - SPARSE_CHECKOUT: A list of files to check out sparsely.
 function(git_checkout URL)
-  cmake_parse_arguments(ARG "" "DIRECTORY;REF;ERROR_VARIABLE" "" ${ARGN})
+  cmake_parse_arguments(ARG "" "DIRECTORY;REF;ERROR_VARIABLE" "SPARSE_CHECKOUT" ${ARGN})
 
   # Clones the Git repository.
   execute_process(
@@ -49,6 +50,19 @@ function(git_checkout URL)
   if(NOT DEFINED ARG_DIRECTORY)
     # Determines the directory of the cloned Git repository if it is not specified.
     string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
+  endif()
+
+  if(ARG_SPARSE_CHECKOUT)
+    execute_process(
+      COMMAND git -C ${ARG_DIRECTORY} sparse-checkout set ${ARG_SPARSE_CHECKOUT}
+      RESULT_VARIABLE RES
+    )
+    if(NOT RES EQUAL 0)
+      _set_error(
+        "Failed to sparse checkout '${ARG_DIRECTORY}' (${RES})"
+        ERROR_VARIABLE ${ARG_ERROR_VARIABLE}
+      )
+    endif()
   endif()
 
   # Checks out the Git repository.
