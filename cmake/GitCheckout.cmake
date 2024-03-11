@@ -24,10 +24,18 @@ endmacro()
 #
 # Arguments:
 #   - URL: The URL of the remote Git repository.
+#
+# Optional arguments:
+#   - REF: The reference (branch, tag, or commit) to check out the Git repository.
 function(git_checkout URL)
-  cmake_parse_arguments(ARG "" "ERROR_VARIABLE" "" ${ARGN})
+  cmake_parse_arguments(ARG "" "REF;ERROR_VARIABLE" "" ${ARGN})
+
+  if(ARG_REF)
+    list(APPEND GIT_CLONE_OPTS --branch ${ARG_REF})
+  endif()
+
   execute_process(
-    COMMAND git clone ${URL}
+    COMMAND git clone ${GIT_CLONE_OPTS} ${URL}
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
