@@ -29,7 +29,7 @@ if("Check out an invalid Git repository" MATCHES ${TEST_MATCHES})
     ERROR_VARIABLE ERR
   )
 
-  set(EXPECTED_ERR "Failed to clone https://github.com/threeal/invalid-project (128)")
+  set(EXPECTED_ERR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
   if(NOT ${ERR} STREQUAL EXPECTED_ERR)
     message(FATAL_ERROR "It should fail to check out because of '${EXPECTED_ERR}' but instead got '${ERR}'")
   endif()
@@ -73,7 +73,7 @@ if("Check out a Git repository on a specific invalid ref" MATCHES ${TEST_MATCHES
     ERROR_VARIABLE ERR
   )
 
-  set(EXPECTED_ERR "Failed to clone https://github.com/threeal/project-starter (128)")
+  set(EXPECTED_ERR "Failed to check out 'project-starter' to 'invalid-ref' (1)")
   if(NOT ${ERR} STREQUAL EXPECTED_ERR)
     message(FATAL_ERROR "It should fail to check out because of '${EXPECTED_ERR}' but instead got '${ERR}'")
   endif()
