@@ -17,6 +17,7 @@ add_cmake_test(
   "Check out a Git repository to a specific directory"
   "Check out a Git repository on a specific ref"
   "Check out a Git repository on a specific invalid ref"
+  "Check out a Git repository sparsely"
 )
 
 add_cmake_test(
