@@ -14,6 +14,8 @@ add_cmake_test(
   GitCheckoutTest.cmake
   "Check out a Git repository"
   "Check out an invalid Git repository"
+  "Check out a Git repository on a specific ref"
+  "Check out a Git repository on a specific invalid ref"
 )
 
 add_cmake_test(
