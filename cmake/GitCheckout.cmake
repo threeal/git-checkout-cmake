@@ -36,7 +36,7 @@ function(git_checkout URL)
 
   # Clones the Git repository.
   execute_process(
-    COMMAND git clone ${URL} ${ARG_DIRECTORY}
+    COMMAND git clone --no-checkout ${URL} ${ARG_DIRECTORY}
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
@@ -51,17 +51,15 @@ function(git_checkout URL)
     string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
   endif()
 
-  if(ARG_REF)
-    # Checks out the Git repository to a specific reference.
-    execute_process(
-      COMMAND git -C ${ARG_DIRECTORY} checkout ${ARG_REF}
-      RESULT_VARIABLE RES
+  # Checks out the Git repository.
+  execute_process(
+    COMMAND git -C ${ARG_DIRECTORY} checkout ${ARG_REF}
+    RESULT_VARIABLE RES
+  )
+  if(NOT RES EQUAL 0)
+    _set_error(
+      "Failed to check out '${ARG_DIRECTORY}' to '${ARG_REF}' (${RES})"
+      ERROR_VARIABLE ${ARG_ERROR_VARIABLE}
     )
-    if(NOT RES EQUAL 0)
-      _set_error(
-        "Failed to check out '${ARG_DIRECTORY}' to '${ARG_REF}' (${RES})"
-        ERROR_VARIABLE ${ARG_ERROR_VARIABLE}
-      )
-    endif()
   endif()
 endfunction()
