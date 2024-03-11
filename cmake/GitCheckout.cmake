@@ -29,13 +29,14 @@ endmacro()
 #   - URL: The URL of the remote Git repository.
 #
 # Optional arguments:
+#   - DIRECTORY: The path of the directory to check out the Git repository.
 #   - REF: The reference (branch, tag, or commit) to check out the Git repository.
 function(git_checkout URL)
-  cmake_parse_arguments(ARG "" "REF;ERROR_VARIABLE" "" ${ARGN})
+  cmake_parse_arguments(ARG "" "DIRECTORY;REF;ERROR_VARIABLE" "" ${ARGN})
 
   # Clones the Git repository.
   execute_process(
-    COMMAND git clone ${URL}
+    COMMAND git clone ${URL} ${ARG_DIRECTORY}
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
@@ -45,18 +46,20 @@ function(git_checkout URL)
     )
   endif()
 
-  # Determines the directory of the cloned Git repository.
-  string(REGEX REPLACE ".*/" "" GIT_DIR ${URL})
+  if(NOT DEFINED ARG_DIRECTORY)
+    # Determines the directory of the cloned Git repository if it is not specified.
+    string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
+  endif()
 
   if(ARG_REF)
     # Checks out the Git repository to a specific reference.
     execute_process(
-      COMMAND git -C ${GIT_DIR} checkout ${ARG_REF}
+      COMMAND git -C ${ARG_DIRECTORY} checkout ${ARG_REF}
       RESULT_VARIABLE RES
     )
     if(NOT RES EQUAL 0)
       _set_error(
-        "Failed to check out '${GIT_DIR}' to '${ARG_REF}' (${RES})"
+        "Failed to check out '${ARG_DIRECTORY}' to '${ARG_REF}' (${RES})"
         ERROR_VARIABLE ${ARG_ERROR_VARIABLE}
       )
     endif()
