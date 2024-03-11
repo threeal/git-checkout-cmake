@@ -5,6 +5,11 @@ endif()
 
 set(TEST_COUNT 0)
 
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+
+include(GitAssert)
+include(GitCheckout)
+
 if("Check out a Git repository" MATCHES ${TEST_MATCHES})
   math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
 
@@ -12,18 +17,14 @@ if("Check out a Git repository" MATCHES ${TEST_MATCHES})
     file(REMOVE_RECURSE project-starter)
   endif()
 
-  include(GitCheckout)
   git_checkout(https://github.com/threeal/project-starter)
 
-  if(NOT EXISTS project-starter)
-    message(FATAL_ERROR "The 'project-starter' directory should exist")
-  endif()
+  assert_git_complete_checkout(project-starter)
 endif()
 
 if("Check out an invalid Git repository" MATCHES ${TEST_MATCHES})
   math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
 
-  include(GitCheckout)
   git_checkout(
     https://github.com/threeal/invalid-project
     ERROR_VARIABLE ERR
@@ -42,12 +43,9 @@ if("Check out a Git repository to a specific directory" MATCHES ${TEST_MATCHES})
     file(REMOVE_RECURSE some-directory)
   endif()
 
-  include(GitCheckout)
   git_checkout(https://github.com/threeal/project-starter DIRECTORY some-directory)
 
-  if(NOT EXISTS some-directory)
-    message(FATAL_ERROR "The 'some-directory' directory should exist")
-  endif()
+  assert_git_complete_checkout(some-directory)
 endif()
 
 if("Check out a Git repository on a specific ref" MATCHES ${TEST_MATCHES})
@@ -57,12 +55,9 @@ if("Check out a Git repository on a specific ref" MATCHES ${TEST_MATCHES})
     file(REMOVE_RECURSE project-starter)
   endif()
 
-  include(GitCheckout)
   git_checkout(https://github.com/threeal/project-starter REF 5a80d20)
 
-  if(NOT EXISTS project-starter)
-    message(FATAL_ERROR "The 'project-starter' directory should exist")
-  endif()
+  assert_git_complete_checkout(project-starter)
 
   execute_process(
     COMMAND git -C project-starter rev-parse --short HEAD
@@ -81,7 +76,6 @@ if("Check out a Git repository on a specific invalid ref" MATCHES ${TEST_MATCHES
     file(REMOVE_RECURSE project-starter)
   endif()
 
-  include(GitCheckout)
   git_checkout(
     https://github.com/threeal/project-starter
     REF invalid-ref
