@@ -12,8 +12,12 @@ endfunction()
 
 add_cmake_test(
   GitCheckoutTest.cmake
-  "Set error"
-  "Set error with variable specified"
   "Check out a Git repository"
   "Check out an invalid Git repository"
+)
+
+add_cmake_test(
+  SetErrorTest.cmake
+  "Set error"
+  "Set error with variable specified"
 )
