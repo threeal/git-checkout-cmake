@@ -1,13 +1,37 @@
 cmake_minimum_required(VERSION 3.3)
 
+# Asserts whether the given path is a Git directory.
+#
+# It asserts whether the given path exists, is a directory, and contains a Git repository.
+#
+# Arguments:
+#   - PATH: The path to check.
+function(_assert_git_directory PATH)
+  if(NOT EXISTS ${PATH})
+    message(FATAL_ERROR "the '${PATH}' path should exist")
+  endif()
+
+  if(NOT IS_DIRECTORY ${PATH})
+    message(FATAL_ERROR "the '${PATH}' path should be a directory")
+  endif()
+
+  execute_process(
+    COMMAND git -C ${PATH} status
+    RESULT_VARIABLE RES
+  )
+  if(RES EQUAL 128)
+    message(FATAL_ERROR "the '${PATH}' directory should contains a Git repository")
+  elseif(NOT RES EQUAL 0)
+    message(FATAL_ERROR "failed to get the Git status of the '${PATH}' directory (${RES})")
+  endif()
+endfunction()
+
 # Asserts whether a Git repository is checked out completely.
 #
 # Arguments:
 #   - DIRECTORY: The path of the directory to check out the Git repository.
 function(assert_git_complete_checkout DIRECTORY)
-  if(NOT EXISTS ${DIRECTORY})
-    message(FATAL_ERROR "the '${DIRECTORY}' directory should exist")
-  endif()
+  _assert_git_directory(${DIRECTORY})
 
   execute_process(
     COMMAND git -C ${DIRECTORY} diff --no-patch --exit-code HEAD
