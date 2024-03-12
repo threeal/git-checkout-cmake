@@ -88,6 +88,24 @@ if("Check out a Git repository on a specific invalid ref" MATCHES ${TEST_MATCHES
   endif()
 endif()
 
+if("Check out a Git repository sparsely" MATCHES ${TEST_MATCHES})
+  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
+
+  if(EXISTS opencv)
+    file(REMOVE_RECURSE opencv)
+  endif()
+
+  git_checkout(
+    https://github.com/opencv/opencv
+    SPARSE_CHECKOUT modules/core samples/gpu
+  )
+
+  assert_git_sparse_checkout(
+    opencv
+    FILES modules/core samples/gpu
+  )
+endif()
+
 if(TEST_COUNT LESS_EQUAL 0)
   message(FATAL_ERROR "Nothing to test with: ${TEST_MATCHES}")
 endif()
