@@ -26,6 +26,24 @@ function(_assert_git_directory PATH)
   endif()
 endfunction()
 
+# Asserts whether a Git repository is cloned incompletely.
+#
+# Arguments:
+#   - PATH: The path of the cloned Git repository.
+function(assert_git_incomplete_clone PATH)
+  _assert_git_directory(${PATH})
+
+  execute_process(
+    COMMAND git -C ${PATH} diff --no-patch --exit-code HEAD
+    RESULT_VARIABLE RES
+  )
+  if(RES EQUAL 0)
+    message(FATAL_ERROR "the Git repository in '${PATH}' should be cloned incompletely")
+  elseif(NOT RES EQUAL 1)
+    message(FATAL_ERROR "failed to get the diff of the repository in '${PATH}' (${RES})")
+  endif()
+endfunction()
+
 # Asserts whether a Git repository is checked out completely.
 #
 # Arguments:

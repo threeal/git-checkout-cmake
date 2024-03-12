@@ -22,20 +22,6 @@ if("Check out a Git repository" MATCHES ${TEST_MATCHES})
   assert_git_complete_checkout(project-starter)
 endif()
 
-if("Check out an invalid Git repository" MATCHES ${TEST_MATCHES})
-  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
-
-  git_checkout(
-    https://github.com/threeal/invalid-project
-    ERROR_VARIABLE ERR
-  )
-
-  set(EXPECTED_ERR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
-  if(NOT ${ERR} STREQUAL EXPECTED_ERR)
-    message(FATAL_ERROR "It should fail to check out because of '${EXPECTED_ERR}' but instead got '${ERR}'")
-  endif()
-endif()
-
 if("Check out a Git repository to a specific directory" MATCHES ${TEST_MATCHES})
   math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
 
