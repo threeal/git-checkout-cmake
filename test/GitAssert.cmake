@@ -2,13 +2,17 @@ cmake_minimum_required(VERSION 3.3)
 
 # Asserts whether the given path is a Git directory.
 #
-# It asserts whether the given path exists.
+# It asserts whether the given path exists and is a directory.
 #
 # Arguments:
 #   - PATH: The path to check.
 function(_assert_git_directory PATH)
   if(NOT EXISTS ${PATH})
     message(FATAL_ERROR "the '${PATH}' path should exist")
+  endif()
+
+  if(NOT IS_DIRECTORY ${PATH})
+    message(FATAL_ERROR "the '${PATH}' path should be a directory")
   endif()
 endfunction()
 
