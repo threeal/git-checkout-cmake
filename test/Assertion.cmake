@@ -2,6 +2,18 @@ include_guard(GLOBAL)
 
 cmake_minimum_required(VERSION 3.3)
 
+# Mocks the implementation of the `message` function.
+#
+# If `MOCK_MESSAGE` is enabled, it will set `${MODE}_MESSAGE` to the given message instead of
+# displaying the message in the log.
+macro(message MODE MESSAGE)
+  if(MOCK_MESSAGE)
+    set(${MODE}_MESSAGE "${MESSAGE}" PARENT_SCOPE)
+  else()
+    _message(${MODE} ${MESSAGE})
+  endif()
+endmacro()
+
 # Asserts whether the given path is a Git directory.
 #
 # It asserts whether the given path exists, is a directory, and contains a Git repository.
