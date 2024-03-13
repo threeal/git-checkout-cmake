@@ -1,3 +1,5 @@
+include_guard(GLOBAL)
+
 cmake_minimum_required(VERSION 3.3)
 
 # Asserts whether the given path is a Git directory.
