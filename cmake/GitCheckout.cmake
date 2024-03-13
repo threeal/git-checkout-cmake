@@ -30,7 +30,7 @@ endmacro()
 #
 # Optional arguments:
 #   - DIRECTORY: The path of the directory to check out the Git repository.
-macro(_git_incomplete_clone URL)
+function(_git_incomplete_clone URL)
   cmake_parse_arguments(ARG "" "DIRECTORY" "" ${ARGN})
 
   execute_process(
@@ -40,7 +40,7 @@ macro(_git_incomplete_clone URL)
   if(NOT RES EQUAL 0)
     message(FATAL_ERROR "Failed to clone '${URL}' (${RES})")
   endif()
-endmacro()
+endfunction()
 
 # Clones and checks out a Git repository from a remote location.
 #

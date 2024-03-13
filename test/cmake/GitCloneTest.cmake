@@ -26,12 +26,7 @@ if("Incompletely clone an invalid Git repository" MATCHES ${TEST_MATCHES})
   math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
 
   set(MOCK_MESSAGE ON)
-
-  function(foo)
-    _git_incomplete_clone(https://github.com/threeal/invalid-project)
-  endfunction()
-
-  foo()
+  _git_incomplete_clone(https://github.com/threeal/invalid-project)
 
   assert_message(FATAL_ERROR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
 endif()
