@@ -11,20 +11,20 @@ function(add_cmake_test FILE)
 endfunction()
 
 add_cmake_test(
-  SetErrorTest.cmake
+  cmake/SetErrorTest.cmake
   "Set error"
   "Set error with variable specified"
 )
 
 add_cmake_test(
-  GitCloneTest.cmake
+  cmake/GitCloneTest.cmake
   "Incompletely clone a Git repository"
   "Incompletely clone an invalid Git repository"
   "Incompletely clone a Git repository to a specific directory"
 )
 
 add_cmake_test(
-  GitCheckoutTest.cmake
+  cmake/GitCheckoutTest.cmake
   "Check out a Git repository"
   "Check out a Git repository to a specific directory"
   "Check out a Git repository on a specific ref"
