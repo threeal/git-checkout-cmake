@@ -21,10 +21,7 @@ if("Set error" MATCHES ${TEST_MATCHES})
 
   foo()
 
-  if(NOT FATAL_ERROR_MESSAGE STREQUAL "Unknown error")
-    set(MOCK_MESSAGE OFF)
-    message(FATAL_ERROR "It should have set the error to 'Unknown error' but instead got '${FATAL_ERROR_MESSAGE}'")
-  endif()
+  assert_message(FATAL_ERROR "Unknown error")
 endif()
 
 if("Set error with variable specified" MATCHES ${TEST_MATCHES})
