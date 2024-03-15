@@ -62,16 +62,10 @@ if("Check out a Git repository on a specific invalid ref" MATCHES ${TEST_MATCHES
     file(REMOVE_RECURSE project-starter)
   endif()
 
-  git_checkout(
-    https://github.com/threeal/project-starter
-    REF invalid-ref
-    ERROR_VARIABLE ERR
-  )
+  set(MOCK_MESSAGE ON)
+  git_checkout(https://github.com/threeal/project-starter REF invalid-ref)
 
-  set(EXPECTED_ERR "Failed to check out 'project-starter' to 'invalid-ref' (1)")
-  if(NOT ${ERR} STREQUAL EXPECTED_ERR)
-    message(FATAL_ERROR "It should fail to check out because of '${EXPECTED_ERR}' but instead got '${ERR}'")
-  endif()
+  assert_message(FATAL_ERROR "Failed to check out 'project-starter' to 'invalid-ref' (1)")
 endif()
 
 if("Check out a Git repository sparsely" MATCHES ${TEST_MATCHES})

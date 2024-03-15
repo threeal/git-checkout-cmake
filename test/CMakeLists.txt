@@ -11,12 +11,6 @@ function(add_cmake_test FILE)
 endfunction()
 
 add_cmake_test(
-  cmake/SetErrorTest.cmake
-  "Set error"
-  "Set error with variable specified"
-)
-
-add_cmake_test(
   cmake/GitCloneTest.cmake
   "Incompletely clone a Git repository"
   "Incompletely clone an invalid Git repository"
