@@ -13,6 +13,7 @@ endfunction()
 add_cmake_test(
   cmake/GitCloneTest.cmake
   "Incompletely clone a Git repository"
+  "Incompletely clone a Git repository to an existing path"
   "Incompletely clone an invalid Git repository"
   "Incompletely clone a Git repository to a specific directory"
 )

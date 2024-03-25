@@ -22,6 +22,20 @@ if("Incompletely clone a Git repository" MATCHES ${TEST_MATCHES})
   assert_git_incomplete_clone(project-starter)
 endif()
 
+if("Incompletely clone a Git repository to an existing path" MATCHES ${TEST_MATCHES})
+  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
+
+  if(EXISTS project-starter)
+    file(REMOVE_RECURSE project-starter)
+  endif()
+  file(TOUCH project-starter)
+
+  set(MOCK_MESSAGE ON)
+  _git_incomplete_clone(https://github.com/threeal/project-starter)
+
+  assert_message(FATAL_ERROR "Unable to clone 'https://github.com/threeal/project-starter' to 'project-starter' because the path already exists")
+endif()
+
 if("Incompletely clone an invalid Git repository" MATCHES ${TEST_MATCHES})
   math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
 
