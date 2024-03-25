@@ -16,6 +16,15 @@ include_guard(GLOBAL)
 function(_git_incomplete_clone URL)
   cmake_parse_arguments(ARG "" "DIRECTORY" "" ${ARGN})
 
+  if(NOT DEFINED ARG_DIRECTORY)
+    # Determines the directory of the cloned Git repository if it is not specified.
+    string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
+  endif()
+
+  if(EXISTS ${ARG_DIRECTORY})
+    message(FATAL_ERROR "Unable to clone '${URL}' to '${ARG_DIRECTORY}' because the path already exists")
+  endif()
+
   execute_process(
     COMMAND git clone --filter=blob:none --no-checkout ${URL} ${ARG_DIRECTORY}
     RESULT_VARIABLE RES
