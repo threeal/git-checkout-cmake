@@ -11,6 +11,14 @@ It also supports sparse checkout for checking out specific files from a large re
 - Checking out a Git repository on a specific reference.
 - Support for sparse checkout.
 
+## Integration
+
+This module can be integrated into a CMake project in the following ways:
+
+- Manually download the [`GitCheckout.cmake`](./cmake/GitCheckout.cmake) file and include it in the CMake project.
+- Use [`file(DOWNLOAD)`](https://cmake.org/cmake/help/latest/command/file.html#download) to automatically download the `GitCheckout.cmake` file.
+- Use [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake) to add this package to the CMake project.
+
 ## Example Usages
 
 This example demonstrates how to clone and check out a Git repository hosted on GitHub:
