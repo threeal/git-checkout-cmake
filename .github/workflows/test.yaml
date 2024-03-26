@@ -18,4 +18,4 @@ jobs:
           options: BUILD_TESTING=ON
 
       - name: Test Project
-        run: ctest -C debug --output-on-failure --test-dir build --no-tests=error
+        uses: threeal/ctest-action@v1.0.0
