@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.19)
 project(
   GitCheckout
   VERSION 0.0.0
-  DESCRIPTION "Clone and check out a Git repository from your CMake project"
+  DESCRIPTION "Clone and check out a Git repository from a CMake project"
   HOMEPAGE_URL https://github.com/threeal/git-checkout-cmake
   LANGUAGES NONE
 )
