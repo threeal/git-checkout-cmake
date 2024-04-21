@@ -23,7 +23,7 @@ jobs:
       - name: Copy Modules
         run: |
           mkdir -p build/page
-          cp cmake/GitCheckout.cmake build/page/latest
+          cp cmake/GitCheckout.cmake build/page/$(git branch --show-current)
 
       - name: Upload Documentation
         uses: actions/upload-pages-artifact@v3.0.1
