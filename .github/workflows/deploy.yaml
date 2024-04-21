@@ -19,11 +19,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.2
+        with:
+          fetch-depth: 0
 
       - name: Copy Modules
         run: |
           mkdir -p build/page
-          cp cmake/GitCheckout.cmake build/page/latest
+          cp cmake/GitCheckout.cmake build/page/$(git branch --show-current)
+          for tag in $(git tag); do
+            git checkout $tag
+            cp cmake/GitCheckout.cmake build/page/$tag
+          done
 
       - name: Upload Documentation
         uses: actions/upload-pages-artifact@v3.0.1
