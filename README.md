@@ -15,9 +15,23 @@ It also supports sparse checkout for checking out specific files from a large re
 
 This module can be integrated into a CMake project in the following ways:
 
-- Manually download the [`GitCheckout.cmake`](./cmake/GitCheckout.cmake) file and include it in the CMake project.
-- Use [`file(DOWNLOAD)`](https://cmake.org/cmake/help/latest/command/file.html#download) to automatically download the `GitCheckout.cmake` file.
-- Use [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake) to add this package to the CMake project.
+- Manually download the [`GitCheckout.cmake`](./cmake/GitCheckout.cmake) file and include it in the CMake project:
+  ```cmake
+  include("path/to/GitCheckout.cmake")
+  ```
+- Use [`file(DOWNLOAD)`](https://cmake.org/cmake/help/latest/command/file.html#download) to automatically download the `GitCheckout.cmake` file:
+  ```cmake
+  file(
+    DOWNLOAD "https://threeal.github.io/git-checkout-cmake/v1.0.0"
+    "${CMAKE_BINARY_DIR}/GitCheckout.cmake"
+  )
+  include("${CMAKE_BINARY_DIR}/GitCheckout.cmake")
+  ```
+- Use [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake) to add this package to the CMake project:
+  ```cmake
+  cpmaddpackage("gh:threeal/git-checkout-cmake@1.0.0")
+  include("${GitCheckout_SOURCE_DIR}/cmake/GitCheckout.cmake")
+  ```
 
 ## Example Usages
 
