@@ -3,6 +3,19 @@
 
 include_guard(GLOBAL)
 
+# Find the Git executable.
+#
+# It will set the 'GIT_EXECUTABLE' variable to the location of the Git executable.
+function(_find_git)
+  if(NOT DEFINED GIT_EXECUTABLE)
+    find_package(Git)
+    if(NOT Git_FOUND OR NOT DEFINED GIT_EXECUTABLE)
+      message(FATAL_ERROR "Git could not be found")
+    endif()
+    set(GIT_EXECUTABLE ${GIT_EXECUTABLE} PARENT_SCOPE)
+  endif()
+endfunction()
+
 # Incompletely clones a Git repository from a remote location.
 #
 # It incompletely clones the Git repository to a specified directory without
@@ -25,8 +38,10 @@ function(_git_incomplete_clone URL)
     message(FATAL_ERROR "Unable to clone '${URL}' to '${ARG_DIRECTORY}' because the path already exists")
   endif()
 
+  _find_git()
+
   execute_process(
-    COMMAND git clone --filter=blob:none --no-checkout ${URL} ${ARG_DIRECTORY}
+    COMMAND ${GIT_EXECUTABLE} clone --filter=blob:none --no-checkout ${URL} ${ARG_DIRECTORY}
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
@@ -53,9 +68,11 @@ function(git_checkout URL)
     string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
   endif()
 
+  _find_git()
+
   if(ARG_SPARSE_CHECKOUT)
     execute_process(
-      COMMAND git -C ${ARG_DIRECTORY} sparse-checkout set ${ARG_SPARSE_CHECKOUT}
+      COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} sparse-checkout set ${ARG_SPARSE_CHECKOUT}
       RESULT_VARIABLE RES
     )
     if(NOT RES EQUAL 0)
@@ -65,7 +82,7 @@ function(git_checkout URL)
 
   # Checks out the Git repository.
   execute_process(
-    COMMAND git -C ${ARG_DIRECTORY} checkout ${ARG_REF}
+    COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} checkout ${ARG_REF}
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
