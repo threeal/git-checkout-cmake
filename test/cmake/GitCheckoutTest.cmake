@@ -1,18 +1,9 @@
-# Matches everything if not defined
-if(NOT TEST_MATCHES)
-  set(TEST_MATCHES ".*")
-endif()
-
-set(TEST_COUNT 0)
-
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 include(Assertion)
 include(GitCheckout)
 
-if("Check out a Git repository" MATCHES ${TEST_MATCHES})
-  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
-
+function(check_out_a_git_repository)
   if(EXISTS project-starter)
     file(REMOVE_RECURSE project-starter)
   endif()
@@ -20,11 +11,9 @@ if("Check out a Git repository" MATCHES ${TEST_MATCHES})
   git_checkout(https://github.com/threeal/project-starter)
 
   assert_git_complete_checkout(project-starter)
-endif()
+endfunction()
 
-if("Check out a Git repository to a specific directory" MATCHES ${TEST_MATCHES})
-  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
-
+function(check_out_a_git_repository_to_a_specific_directory)
   if(EXISTS some-directory)
     file(REMOVE_RECURSE some-directory)
   endif()
@@ -32,11 +21,9 @@ if("Check out a Git repository to a specific directory" MATCHES ${TEST_MATCHES})
   git_checkout(https://github.com/threeal/project-starter DIRECTORY some-directory)
 
   assert_git_complete_checkout(some-directory)
-endif()
+endfunction()
 
-if("Check out a Git repository on a specific ref" MATCHES ${TEST_MATCHES})
-  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
-
+function(check_out_a_git_repository_on_a_specific_ref)
   if(EXISTS project-starter)
     file(REMOVE_RECURSE project-starter)
   endif()
@@ -53,11 +40,9 @@ if("Check out a Git repository on a specific ref" MATCHES ${TEST_MATCHES})
   if(NOT COMMIT_SHA STREQUAL 5a80d20)
     message(FATAL_ERROR "The commit SHA should be '5a80d20' but instead got '${COMMIT_SHA}'")
   endif()
-endif()
+endfunction()
 
-if("Check out a Git repository on a specific invalid ref" MATCHES ${TEST_MATCHES})
-  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
-
+function(check_out_a_git_repository_on_a_specific_invalid_ref)
   if(EXISTS project-starter)
     file(REMOVE_RECURSE project-starter)
   endif()
@@ -66,11 +51,9 @@ if("Check out a Git repository on a specific invalid ref" MATCHES ${TEST_MATCHES
   git_checkout(https://github.com/threeal/project-starter REF invalid-ref)
 
   assert_message(FATAL_ERROR "Failed to check out 'project-starter' to 'invalid-ref' (1)")
-endif()
+endfunction()
 
-if("Check out a Git repository sparsely" MATCHES ${TEST_MATCHES})
-  math(EXPR TEST_COUNT "${TEST_COUNT} + 1")
-
+function(check_out_a_git_repository_sparsely)
   if(EXISTS opencv)
     file(REMOVE_RECURSE opencv)
   endif()
@@ -84,8 +67,12 @@ if("Check out a Git repository sparsely" MATCHES ${TEST_MATCHES})
     opencv
     FILES modules/core samples/gpu
   )
+endfunction()
+
+if(NOT DEFINED TEST_COMMAND)
+  message(FATAL_ERROR "The 'TEST_COMMAND' variable should be defined")
+elseif(NOT COMMAND ${TEST_COMMAND})
+  message(FATAL_ERROR "Unable to find a command named '${TEST_COMMAND}'")
 endif()
 
-if(TEST_COUNT LESS_EQUAL 0)
-  message(FATAL_ERROR "Nothing to test with: ${TEST_MATCHES}")
-endif()
+cmake_language(CALL ${TEST_COMMAND})
