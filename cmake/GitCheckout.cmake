@@ -34,18 +34,24 @@ function(_git_incomplete_clone URL)
     string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
   endif()
 
-  if(EXISTS ${ARG_DIRECTORY})
-    message(FATAL_ERROR "Unable to clone '${URL}' to '${ARG_DIRECTORY}' because the path already exists")
-  endif()
-
   _find_git()
 
-  execute_process(
-    COMMAND ${GIT_EXECUTABLE} clone --filter=blob:none --no-checkout ${URL} ${ARG_DIRECTORY}
-    RESULT_VARIABLE RES
-  )
-  if(NOT RES EQUAL 0)
-    message(FATAL_ERROR "Failed to clone '${URL}' (${RES})")
+  if(EXISTS ${ARG_DIRECTORY})
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} rev-parse --is-inside-work-tree
+      RESULT_VARIABLE RES
+    )
+    if(NOT RES EQUAL 0)
+      message(FATAL_ERROR "Unable to clone '${URL}' to '${ARG_DIRECTORY}' because the path already exists and is not a Git repository")
+    endif()
+  else()
+    execute_process(
+      COMMAND ${GIT_EXECUTABLE} clone --filter=blob:none --no-checkout ${URL} ${ARG_DIRECTORY}
+      RESULT_VARIABLE RES
+    )
+    if(NOT RES EQUAL 0)
+      message(FATAL_ERROR "Failed to clone '${URL}' (${RES})")
+    endif()
   endif()
 endfunction()
 

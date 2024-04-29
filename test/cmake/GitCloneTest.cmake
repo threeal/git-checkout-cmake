@@ -22,7 +22,7 @@ function(incompletely_clone_a_git_repository_to_an_existing_path)
   set(MOCK_MESSAGE ON)
   _git_incomplete_clone(https://github.com/threeal/project-starter)
 
-  assert_message(FATAL_ERROR "Unable to clone 'https://github.com/threeal/project-starter' to 'project-starter' because the path already exists")
+  assert_message(FATAL_ERROR "Unable to clone 'https://github.com/threeal/project-starter' to 'project-starter' because the path already exists and is not a Git repository")
 endfunction()
 
 function(incompletely_clone_an_invalid_git_repository)
