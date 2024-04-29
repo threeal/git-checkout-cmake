@@ -11,6 +11,11 @@ function(add_cmake_test FILE)
 endfunction()
 
 add_cmake_test(
+  cmake/FindGitTest.cmake
+  "Find the Git executable"
+)
+
+add_cmake_test(
   cmake/GitCloneTest.cmake
   "Incompletely clone a Git repository"
   "Incompletely clone a Git repository to an existing path"
