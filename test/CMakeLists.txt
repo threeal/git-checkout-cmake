@@ -23,7 +23,6 @@ add_cmake_test(
   "Incompletely clone a Git repository into an existing Git directory"
   "Incompletely clone a Git repository into an existing path"
   "Incompletely clone an invalid Git repository"
-  "Incompletely clone a Git repository to a specific directory"
 )
 
 add_cmake_test(

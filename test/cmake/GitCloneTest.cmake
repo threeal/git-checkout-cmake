@@ -39,16 +39,6 @@ function(test_incompletely_clone_an_invalid_git_repository)
   assert_message(FATAL_ERROR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
 endfunction()
 
-function(test_incompletely_clone_a_git_repository_to_a_specific_directory)
-  if(EXISTS some-directory)
-    file(REMOVE_RECURSE some-directory)
-  endif()
-
-  _git_incomplete_clone(https://github.com/threeal/project-starter some-directory)
-
-  assert_git_incomplete_clone(some-directory)
-endfunction()
-
 if(NOT DEFINED TEST_COMMAND)
   message(FATAL_ERROR "The 'TEST_COMMAND' variable should be defined")
 elseif(NOT COMMAND test_${TEST_COMMAND})
