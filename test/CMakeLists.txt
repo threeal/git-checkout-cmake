@@ -13,7 +13,7 @@ function(add_cmake_test FILE)
 endfunction()
 
 add_cmake_test(
-  cmake/FindGitTest.cmake
+  cmake/GitOtherTest.cmake
   "Find the Git executable"
 )
 
