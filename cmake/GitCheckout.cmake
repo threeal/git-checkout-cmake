@@ -3,6 +3,8 @@
 
 include_guard(GLOBAL)
 
+cmake_minimum_required(VERSION 3.24)
+
 # Find the Git executable.
 #
 # It will set the 'GIT_EXECUTABLE' variable to the location of the Git executable.
@@ -38,10 +40,13 @@ function(_git_incomplete_clone URL)
 
   if(EXISTS ${ARG_DIRECTORY})
     execute_process(
-      COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} rev-parse --is-inside-work-tree
+      COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} rev-parse --show-toplevel
       RESULT_VARIABLE RES
+      OUTPUT_VARIABLE OUT
     )
-    if(NOT RES EQUAL 0)
+    string(STRIP ${OUT} OUT)
+    message(WARNING "'${OUT}' compared to '${CMAKE_CURRENT_BINARY_DIR}/${ARG_DIRECTORY}'")
+    if(NOT RES EQUAL 0 OR NOT OUT PATH_EQUAL ${CMAKE_CURRENT_BINARY_DIR}/${ARG_DIRECTORY})
       message(FATAL_ERROR "Unable to clone '${URL}' to '${ARG_DIRECTORY}' because the path already exists and is not a Git repository")
     endif()
   else()
