@@ -2,7 +2,7 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
 include(GitCheckout)
 
-function(find_the_git_executable)
+function(test_find_the_git_executable)
   _find_git()
 
   if(NOT DEFINED GIT_EXECUTABLE)
@@ -14,8 +14,8 @@ endfunction()
 
 if(NOT DEFINED TEST_COMMAND)
   message(FATAL_ERROR "The 'TEST_COMMAND' variable should be defined")
-elseif(NOT COMMAND ${TEST_COMMAND})
-  message(FATAL_ERROR "Unable to find a command named '${TEST_COMMAND}'")
+elseif(NOT COMMAND test_${TEST_COMMAND})
+  message(FATAL_ERROR "Unable to find a command named 'test_${TEST_COMMAND}'")
 endif()
 
-cmake_language(CALL ${TEST_COMMAND})
+cmake_language(CALL test_${TEST_COMMAND})
