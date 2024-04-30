@@ -1,5 +1,7 @@
 include_guard(GLOBAL)
 
+include(GitCheckout)
+
 # Mocks the implementation of the `message` function.
 #
 # If `MOCK_MESSAGE` is enabled, it will set `${MODE}_MESSAGE` to the given message instead of
@@ -45,8 +47,10 @@ function(_assert_git_directory PATH)
     message(FATAL_ERROR "the '${PATH}' path should be a directory")
   endif()
 
+  _find_git()
+
   execute_process(
-    COMMAND git -C ${PATH} status
+    COMMAND ${GIT_EXECUTABLE} -C ${PATH} status
     RESULT_VARIABLE RES
   )
   if(RES EQUAL 128)
@@ -63,8 +67,10 @@ endfunction()
 function(assert_git_incomplete_clone PATH)
   _assert_git_directory(${PATH})
 
+  _find_git()
+
   execute_process(
-    COMMAND git -C ${PATH} diff --no-patch --exit-code HEAD
+    COMMAND ${GIT_EXECUTABLE} -C ${PATH} diff --no-patch --exit-code HEAD
     RESULT_VARIABLE RES
   )
   if(RES EQUAL 0)
@@ -86,8 +92,10 @@ function(assert_git_complete_checkout DIRECTORY)
 
   _assert_git_directory(${DIRECTORY})
 
+  _find_git()
+
   execute_process(
-    COMMAND git -C ${DIRECTORY} diff --no-patch --exit-code HEAD
+    COMMAND ${GIT_EXECUTABLE} -C ${DIRECTORY} diff --no-patch --exit-code HEAD
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)
@@ -96,7 +104,7 @@ function(assert_git_complete_checkout DIRECTORY)
 
   if(DEFINED ARG_EXPECTED_COMMIT_SHA)
     execute_process(
-      COMMAND git -C ${DIRECTORY} rev-parse --short HEAD
+      COMMAND ${GIT_EXECUTABLE} -C ${DIRECTORY} rev-parse --short HEAD
       OUTPUT_VARIABLE COMMIT_SHA
     )
     string(STRIP ${COMMIT_SHA} COMMIT_SHA)
