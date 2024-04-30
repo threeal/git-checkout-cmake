@@ -1,7 +1,5 @@
 include_guard(GLOBAL)
 
-cmake_minimum_required(VERSION 3.3)
-
 # Mocks the implementation of the `message` function.
 #
 # If `MOCK_MESSAGE` is enabled, it will set `${MODE}_MESSAGE` to the given message instead of
