@@ -78,7 +78,12 @@ endfunction()
 #
 # Arguments:
 #   - DIRECTORY: The path of the directory to check out the Git repository.
+#
+# Optional arguments:
+#   - EXPECTED_COMMIT_SHA: The expected commit SHA of the checked out Git repository.
 function(assert_git_complete_checkout DIRECTORY)
+  cmake_parse_arguments(ARG "" EXPECTED_COMMIT_SHA "" ${ARGN})
+
   _assert_git_directory(${DIRECTORY})
 
   execute_process(
@@ -87,6 +92,17 @@ function(assert_git_complete_checkout DIRECTORY)
   )
   if(NOT RES EQUAL 0)
     message(FATAL_ERROR "the repository should be checked out completely (${RES})")
+  endif()
+
+  if(DEFINED ARG_EXPECTED_COMMIT_SHA)
+    execute_process(
+      COMMAND git -C ${DIRECTORY} rev-parse --short HEAD
+      OUTPUT_VARIABLE COMMIT_SHA
+    )
+    string(STRIP ${COMMIT_SHA} COMMIT_SHA)
+    if(NOT COMMIT_SHA STREQUAL ${ARG_EXPECTED_COMMIT_SHA})
+      message(FATAL_ERROR "The commit SHA should be '${ARG_EXPECTED_COMMIT_SHA}' but instead got '${COMMIT_SHA}'")
+    endif()
   endif()
 endfunction()
 

@@ -38,16 +38,7 @@ function(check_out_a_git_repository_on_a_specific_ref)
 
   git_checkout(https://github.com/threeal/project-starter REF 5a80d20)
 
-  assert_git_complete_checkout(project-starter)
-
-  execute_process(
-    COMMAND git -C project-starter rev-parse --short HEAD
-    OUTPUT_VARIABLE COMMIT_SHA
-  )
-  string(STRIP ${COMMIT_SHA} COMMIT_SHA)
-  if(NOT COMMIT_SHA STREQUAL 5a80d20)
-    message(FATAL_ERROR "The commit SHA should be '5a80d20' but instead got '${COMMIT_SHA}'")
-  endif()
+  assert_git_complete_checkout(project-starter EXPECTED_COMMIT_SHA 5a80d20)
 endfunction()
 
 function(check_out_a_git_repository_on_a_specific_invalid_ref)
@@ -66,16 +57,7 @@ function(check_out_a_git_repository_into_an_existing_git_directory_on_a_specific
 
   git_checkout(https://github.com/threeal/project-starter REF 316dec5)
 
-  assert_git_complete_checkout(project-starter)
-
-  execute_process(
-    COMMAND git -C project-starter rev-parse --short HEAD
-    OUTPUT_VARIABLE COMMIT_SHA
-  )
-  string(STRIP ${COMMIT_SHA} COMMIT_SHA)
-  if(NOT COMMIT_SHA STREQUAL 316dec5)
-    message(FATAL_ERROR "The commit SHA should be '316dec5' but instead got '${COMMIT_SHA}'")
-  endif()
+  assert_git_complete_checkout(project-starter EXPECTED_COMMIT_SHA 316dec5)
 endfunction()
 
 function(check_out_a_git_repository_sparsely)
