@@ -8,7 +8,7 @@ function(test_incompletely_clone_a_Git_repository)
     file(REMOVE_RECURSE project-starter)
   endif()
 
-  _git_incomplete_clone(https://github.com/threeal/project-starter)
+  _git_incomplete_clone(https://github.com/threeal/project-starter project-starter)
 
   assert_git_incomplete_clone(project-starter)
 endfunction()
@@ -16,7 +16,7 @@ endfunction()
 function(test_incompletely_clone_a_git_repository_into_an_existing_git_directory)
   test_incompletely_clone_a_Git_repository()
 
-  _git_incomplete_clone(https://github.com/threeal/project-starter)
+  _git_incomplete_clone(https://github.com/threeal/project-starter project-starter)
   assert_git_incomplete_clone(project-starter)
 endfunction()
 
@@ -27,14 +27,14 @@ function(test_incompletely_clone_a_git_repository_into_an_existing_path)
   file(TOUCH project-starter)
 
   set(MOCK_MESSAGE ON)
-  _git_incomplete_clone(https://github.com/threeal/project-starter)
+  _git_incomplete_clone(https://github.com/threeal/project-starter project-starter)
 
   assert_message(FATAL_ERROR "Unable to clone 'https://github.com/threeal/project-starter' to 'project-starter' because the path already exists and is not a Git repository")
 endfunction()
 
 function(test_incompletely_clone_an_invalid_git_repository)
   set(MOCK_MESSAGE ON)
-  _git_incomplete_clone(https://github.com/threeal/invalid-project)
+  _git_incomplete_clone(https://github.com/threeal/invalid-project invalid-project)
 
   assert_message(FATAL_ERROR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
 endfunction()
@@ -44,7 +44,7 @@ function(test_incompletely_clone_a_git_repository_to_a_specific_directory)
     file(REMOVE_RECURSE some-directory)
   endif()
 
-  _git_incomplete_clone(https://github.com/threeal/project-starter DIRECTORY some-directory)
+  _git_incomplete_clone(https://github.com/threeal/project-starter some-directory)
 
   assert_git_incomplete_clone(some-directory)
 endfunction()

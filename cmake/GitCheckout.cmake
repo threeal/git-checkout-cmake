@@ -18,35 +18,25 @@ endfunction()
 
 # Incompletely clones a Git repository from a remote location.
 #
-# It incompletely clones the Git repository to a specified directory without
-# checking out any files from the repository.
+# It incompletely clones a Git repository to a specified directory without checking out any files.
 #
 # Arguments:
 #   - URL: The URL of the remote Git repository.
-#
-# Optional arguments:
 #   - DIRECTORY: The path of the directory to check out the Git repository.
-function(_git_incomplete_clone URL)
-  cmake_parse_arguments(ARG "" "DIRECTORY" "" ${ARGN})
-
-  if(NOT DEFINED ARG_DIRECTORY)
-    # Determines the directory of the cloned Git repository if it is not specified.
-    string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
-  endif()
-
+function(_git_incomplete_clone URL DIRECTORY)
   _find_git()
 
-  if(EXISTS ${ARG_DIRECTORY})
+  if(EXISTS ${DIRECTORY})
     execute_process(
-      COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} rev-parse --is-inside-work-tree
+      COMMAND ${GIT_EXECUTABLE} -C ${DIRECTORY} rev-parse --is-inside-work-tree
       RESULT_VARIABLE RES
     )
     if(NOT RES EQUAL 0)
-      message(FATAL_ERROR "Unable to clone '${URL}' to '${ARG_DIRECTORY}' because the path already exists and is not a Git repository")
+      message(FATAL_ERROR "Unable to clone '${URL}' to '${DIRECTORY}' because the path already exists and is not a Git repository")
     endif()
   else()
     execute_process(
-      COMMAND ${GIT_EXECUTABLE} clone --filter=blob:none --no-checkout ${URL} ${ARG_DIRECTORY}
+      COMMAND ${GIT_EXECUTABLE} clone --filter=blob:none --no-checkout ${URL} ${DIRECTORY}
       RESULT_VARIABLE RES
     )
     if(NOT RES EQUAL 0)
@@ -67,12 +57,12 @@ endfunction()
 function(git_checkout URL)
   cmake_parse_arguments(ARG "" "DIRECTORY;REF" "SPARSE_CHECKOUT" ${ARGN})
 
-  _git_incomplete_clone(${URL} DIRECTORY ${ARG_DIRECTORY})
-
   if(NOT DEFINED ARG_DIRECTORY)
     # Determines the directory of the cloned Git repository if it is not specified.
     string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
   endif()
+
+  _git_incomplete_clone(${URL} ${ARG_DIRECTORY})
 
   _find_git()
 
