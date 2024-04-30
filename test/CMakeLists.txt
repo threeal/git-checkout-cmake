@@ -15,6 +15,8 @@ endfunction()
 add_cmake_test(
   cmake/GitOtherTest.cmake
   "Find the Git executable"
+  "Get the Git check out directory with a directory provided"
+  "Get the Git check out directory without any directory provided"
 )
 
 add_cmake_test(
