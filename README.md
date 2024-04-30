@@ -22,14 +22,14 @@ This module can be integrated into a CMake project in the following ways:
 - Use [`file(DOWNLOAD)`](https://cmake.org/cmake/help/latest/command/file.html#download) to automatically download the `GitCheckout.cmake` file:
   ```cmake
   file(
-    DOWNLOAD "https://threeal.github.io/git-checkout-cmake/v1.0.0"
+    DOWNLOAD "https://threeal.github.io/git-checkout-cmake/v1.1.0"
     "${CMAKE_BINARY_DIR}/GitCheckout.cmake"
   )
   include("${CMAKE_BINARY_DIR}/GitCheckout.cmake")
   ```
 - Use [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake) to add this package to the CMake project:
   ```cmake
-  cpmaddpackage("gh:threeal/git-checkout-cmake@1.0.0")
+  cpmaddpackage("gh:threeal/git-checkout-cmake@1.1.0")
   include("${GitCheckout_SOURCE_DIR}/cmake/GitCheckout.cmake")
   ```
 
