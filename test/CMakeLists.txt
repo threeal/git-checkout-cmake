@@ -20,7 +20,8 @@ add_cmake_test(
 add_cmake_test(
   cmake/GitCloneTest.cmake
   "Incompletely clone a Git repository"
-  "Incompletely clone a Git repository to an existing path"
+  "Incompletely clone a Git repository into an existing Git directory"
+  "Incompletely clone a Git repository into an existing path"
   "Incompletely clone an invalid Git repository"
   "Incompletely clone a Git repository to a specific directory"
 )
@@ -28,8 +29,11 @@ add_cmake_test(
 add_cmake_test(
   cmake/GitCheckoutTest.cmake
   "Check out a Git repository"
+  "Check out a Git repository into an existing Git directory"
   "Check out a Git repository to a specific directory"
   "Check out a Git repository on a specific ref"
   "Check out a Git repository on a specific invalid ref"
+  "Check out a Git repository into an existing Git directory on a specific ref"
   "Check out a Git repository sparsely"
+  "Check out a Git repository into an existing Git directory sparsely"
 )

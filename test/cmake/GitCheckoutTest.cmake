@@ -13,6 +13,14 @@ function(check_out_a_git_repository)
   assert_git_complete_checkout(project-starter)
 endfunction()
 
+function(check_out_a_git_repository_into_an_existing_git_directory)
+  check_out_a_git_repository()
+
+  git_checkout(https://github.com/threeal/project-starter)
+
+  assert_git_complete_checkout(project-starter)
+endfunction()
+
 function(check_out_a_git_repository_to_a_specific_directory)
   if(EXISTS some-directory)
     file(REMOVE_RECURSE some-directory)
@@ -53,20 +61,39 @@ function(check_out_a_git_repository_on_a_specific_invalid_ref)
   assert_message(FATAL_ERROR "Failed to check out 'project-starter' to 'invalid-ref' (1)")
 endfunction()
 
+function(check_out_a_git_repository_into_an_existing_git_directory_on_a_specific_ref)
+  check_out_a_git_repository_on_a_specific_ref()
+
+  git_checkout(https://github.com/threeal/project-starter REF 316dec5)
+
+  assert_git_complete_checkout(project-starter)
+
+  execute_process(
+    COMMAND git -C project-starter rev-parse --short HEAD
+    OUTPUT_VARIABLE COMMIT_SHA
+  )
+  string(STRIP ${COMMIT_SHA} COMMIT_SHA)
+  if(NOT COMMIT_SHA STREQUAL 316dec5)
+    message(FATAL_ERROR "The commit SHA should be '316dec5' but instead got '${COMMIT_SHA}'")
+  endif()
+endfunction()
+
 function(check_out_a_git_repository_sparsely)
   if(EXISTS opencv)
     file(REMOVE_RECURSE opencv)
   endif()
 
-  git_checkout(
-    https://github.com/opencv/opencv
-    SPARSE_CHECKOUT modules/core samples/gpu
-  )
+  git_checkout(https://github.com/opencv/opencv SPARSE_CHECKOUT modules/core samples/gpu)
 
-  assert_git_sparse_checkout(
-    opencv
-    FILES modules/core samples/gpu
-  )
+  assert_git_sparse_checkout(opencv FILES modules/core samples/gpu)
+endfunction()
+
+function(check_out_a_git_repository_into_an_existing_git_directory_sparsely)
+  check_out_a_git_repository_sparsely()
+
+  git_checkout(https://github.com/opencv/opencv SPARSE_CHECKOUT modules/core modules/imgproc)
+
+  assert_git_sparse_checkout(opencv FILES modules/core modules/imgproc)
 endfunction()
 
 if(NOT DEFINED TEST_COMMAND)
