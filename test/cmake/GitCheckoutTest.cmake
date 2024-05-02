@@ -49,7 +49,7 @@ function(test_check_out_a_git_repository_on_a_specific_invalid_ref)
   set(MOCK_MESSAGE ON)
   git_checkout(https://github.com/threeal/project-starter REF invalid-ref)
 
-  assert_message(FATAL_ERROR "Failed to check out 'project-starter' to 'invalid-ref' (1)")
+  assert_message(FATAL_ERROR "Failed to check out '${CMAKE_CURRENT_BINARY_DIR}/project-starter' to 'invalid-ref' (1)")
 endfunction()
 
 function(test_check_out_a_git_repository_into_an_existing_git_directory_on_a_specific_ref)
