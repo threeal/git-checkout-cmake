@@ -16,6 +16,22 @@ function(_find_git)
   endif()
 endfunction()
 
+# Gets the path of the directory to check out the Git repository.
+#
+# If the 'DIRECTORY' argument is empty, it will set the 'OUTPUT' argument based on the location of the remote Git
+# repository. Otherwise, it will set the 'OUTPUT' argument with the same value as the 'DIRECTORY' argument.
+#
+# Arguments:
+#   - URL: The URL of the remote Git repository.
+#   - DIRECTORY: The path of the directory to check out the Git repository.
+#   - OUTPUT: The output variable that will be set with the path of the directory to check out the Git repository.
+function(_get_git_checkout_directory URL DIRECTORY OUTPUT)
+  if(DIRECTORY STREQUAL "")
+    string(REGEX REPLACE ".*/" "" DIRECTORY "${URL}")
+  endif()
+  set("${OUTPUT}" "${DIRECTORY}" PARENT_SCOPE)
+endfunction()
+
 # Incompletely clones a Git repository from a remote location.
 #
 # It incompletely clones a Git repository to a specified directory without checking out any files.
@@ -57,10 +73,7 @@ endfunction()
 function(git_checkout URL)
   cmake_parse_arguments(ARG "" "DIRECTORY;REF" "SPARSE_CHECKOUT" ${ARGN})
 
-  if(NOT DEFINED ARG_DIRECTORY)
-    # Determines the directory of the cloned Git repository if it is not specified.
-    string(REGEX REPLACE ".*/" "" ARG_DIRECTORY ${URL})
-  endif()
+  _get_git_checkout_directory("${URL}" "${ARG_DIRECTORY}" ARG_DIRECTORY)
 
   _git_incomplete_clone(${URL} ${ARG_DIRECTORY})
 
