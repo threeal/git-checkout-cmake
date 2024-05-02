@@ -21,6 +21,9 @@ endfunction()
 # If the 'DIRECTORY' argument is empty, it will set the 'OUTPUT' argument based on the location of the remote Git
 # repository. Otherwise, it will set the 'OUTPUT' argument with the same value as the 'DIRECTORY' argument.
 #
+# If the output path of the directory is not an absolute path, it will convert it to an absolute path relative to the
+# current CMake binary directory.
+#
 # Arguments:
 #   - URL: The URL of the remote Git repository.
 #   - DIRECTORY: The path of the directory to check out the Git repository.
@@ -29,6 +32,11 @@ function(_get_git_checkout_directory URL DIRECTORY OUTPUT)
   if(DIRECTORY STREQUAL "")
     string(REGEX REPLACE ".*/" "" DIRECTORY "${URL}")
   endif()
+
+  if(NOT IS_ABSOLUTE "${DIRECTORY}")
+    set(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/${DIRECTORY})
+  endif()
+
   set("${OUTPUT}" "${DIRECTORY}" PARENT_SCOPE)
 endfunction()
 

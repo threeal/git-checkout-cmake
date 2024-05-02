@@ -17,8 +17,8 @@ function(test_get_the_git_check_out_directory_with_a_directory_provided)
 
   if(NOT DEFINED DIRECTORY)
     message(FATAL_ERROR "The 'DIRECTORY' variable should be defined")
-  elseif(NOT DIRECTORY STREQUAL some-directory)
-    message(FATAL_ERROR "The Git check out directory should be set to 'some-directory' but instead got '${DIRECTORY}'")
+  elseif(NOT DIRECTORY STREQUAL ${CMAKE_CURRENT_BINARY_DIR}/some-directory)
+    message(FATAL_ERROR "The Git check out directory should be set to '${CMAKE_CURRENT_BINARY_DIR}/some-directory' but instead got '${DIRECTORY}'")
   endif()
 endfunction()
 
@@ -27,8 +27,8 @@ function(test_get_the_git_check_out_directory_without_any_directory_provided)
 
   if(NOT DEFINED DIRECTORY)
     message(FATAL_ERROR "The 'DIRECTORY' variable should be defined")
-  elseif(NOT DIRECTORY STREQUAL project-starter)
-    message(FATAL_ERROR "The Git check out directory should be set to 'project-starter' but instead got '${DIRECTORY}'")
+  elseif(NOT DIRECTORY STREQUAL ${CMAKE_CURRENT_BINARY_DIR}/project-starter)
+    message(FATAL_ERROR "The Git check out directory should be set to '${CMAKE_CURRENT_BINARY_DIR}/project-starter' but instead got '${DIRECTORY}'")
   endif()
 endfunction()
 
