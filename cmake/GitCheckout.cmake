@@ -12,7 +12,7 @@ function(_find_git)
     if(NOT Git_FOUND OR NOT DEFINED GIT_EXECUTABLE)
       message(FATAL_ERROR "Git could not be found")
     endif()
-    set(GIT_EXECUTABLE ${GIT_EXECUTABLE} PARENT_SCOPE)
+    set(GIT_EXECUTABLE "${GIT_EXECUTABLE}" PARENT_SCOPE)
   endif()
 endfunction()
 
@@ -50,9 +50,9 @@ endfunction()
 function(_git_incomplete_clone URL DIRECTORY)
   _find_git()
 
-  if(EXISTS ${DIRECTORY})
+  if(EXISTS "${DIRECTORY}")
     execute_process(
-      COMMAND ${GIT_EXECUTABLE} -C ${DIRECTORY} rev-parse --is-inside-work-tree
+      COMMAND "${GIT_EXECUTABLE}" -C "${DIRECTORY}" rev-parse --is-inside-work-tree
       RESULT_VARIABLE RES
     )
     if(NOT RES EQUAL 0)
@@ -60,7 +60,7 @@ function(_git_incomplete_clone URL DIRECTORY)
     endif()
   else()
     execute_process(
-      COMMAND ${GIT_EXECUTABLE} clone --filter=blob:none --no-checkout ${URL} ${DIRECTORY}
+      COMMAND "${GIT_EXECUTABLE}" clone --filter=blob:none --no-checkout "${URL}" "${DIRECTORY}"
       RESULT_VARIABLE RES
     )
     if(NOT RES EQUAL 0)
@@ -83,13 +83,13 @@ function(git_checkout URL)
 
   _get_git_checkout_directory("${URL}" "${ARG_DIRECTORY}" ARG_DIRECTORY)
 
-  _git_incomplete_clone(${URL} ${ARG_DIRECTORY})
+  _git_incomplete_clone("${URL}" "${ARG_DIRECTORY}")
 
   _find_git()
 
   if(ARG_SPARSE_CHECKOUT)
     execute_process(
-      COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} sparse-checkout set ${ARG_SPARSE_CHECKOUT}
+      COMMAND "${GIT_EXECUTABLE}" -C "${ARG_DIRECTORY}" sparse-checkout set ${ARG_SPARSE_CHECKOUT}
       RESULT_VARIABLE RES
     )
     if(NOT RES EQUAL 0)
@@ -99,7 +99,7 @@ function(git_checkout URL)
 
   # Checks out the Git repository.
   execute_process(
-    COMMAND ${GIT_EXECUTABLE} -C ${ARG_DIRECTORY} checkout ${ARG_REF}
+    COMMAND "${GIT_EXECUTABLE}" -C "${ARG_DIRECTORY}" checkout ${ARG_REF}
     RESULT_VARIABLE RES
   )
   if(NOT RES EQUAL 0)

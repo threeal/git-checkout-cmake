@@ -7,7 +7,7 @@ function(test_find_the_git_executable)
 
   if(NOT DEFINED GIT_EXECUTABLE)
     message(FATAL_ERROR "The 'GIT_EXECUTABLE' variable should be defined")
-  elseif(NOT EXISTS ${GIT_EXECUTABLE})
+  elseif(NOT EXISTS "${GIT_EXECUTABLE}")
     message(FATAL_ERROR "The Git executable should exist at '${GIT_EXECUTABLE}'")
   endif()
 endfunction()
