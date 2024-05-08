@@ -16,6 +16,28 @@ function(_find_git)
   endif()
 endfunction()
 
+# Checks whether the given path is a directory containing a valid Git repository.
+#
+# Arguments:
+#   - PATH: The path to check.
+#   - OUTPUT: The output variable that will be set with a boolean indicating whether the path is a directory containing
+#     a valid Git repository.
+function(_check_valid_git_directory PATH OUTPUT)
+  if(IS_DIRECTORY "${PATH}")
+    _find_git()
+    execute_process(
+      COMMAND "${GIT_EXECUTABLE}" -C "${PATH}" rev-parse --is-inside-work-tree
+      RESULT_VARIABLE RES
+    )
+    if(RES EQUAL 0)
+      set("${OUTPUT}" TRUE PARENT_SCOPE)
+      return()
+    endif()
+  endif()
+
+  set("${OUTPUT}" FALSE PARENT_SCOPE)
+endfunction()
+
 # Gets the path of the directory to check out the Git repository.
 #
 # If the 'DIRECTORY' argument is empty, it will set the 'OUTPUT' argument based on the location of the remote Git
