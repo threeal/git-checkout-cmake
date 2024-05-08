@@ -34,10 +34,4 @@ function("Get the Git check out directory without any directory provided")
   assert_strequal("${DIRECTORY}" ${CMAKE_CURRENT_BINARY_DIR}/project-starter)
 endfunction()
 
-if(NOT DEFINED TEST_COMMAND)
-  message(FATAL_ERROR "The 'TEST_COMMAND' variable should be defined")
-elseif(NOT COMMAND "${TEST_COMMAND}")
-  message(FATAL_ERROR "Unable to find a command named '${TEST_COMMAND}'")
-endif()
-
 cmake_language(CALL "${TEST_COMMAND}")

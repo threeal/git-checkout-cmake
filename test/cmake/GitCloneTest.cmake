@@ -41,10 +41,4 @@ function("Incompletely clone an invalid Git repository")
   assert_message(FATAL_ERROR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
 endfunction()
 
-if(NOT DEFINED TEST_COMMAND)
-  message(FATAL_ERROR "The 'TEST_COMMAND' variable should be defined")
-elseif(NOT COMMAND "${TEST_COMMAND}")
-  message(FATAL_ERROR "Unable to find a command named '${TEST_COMMAND}'")
-endif()
-
 cmake_language(CALL "${TEST_COMMAND}")
