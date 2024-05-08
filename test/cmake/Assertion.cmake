@@ -2,36 +2,6 @@ include_guard(GLOBAL)
 
 include(GitCheckout)
 
-# Mocks the implementation of the `message` function.
-#
-# If `MOCK_MESSAGE` is enabled, it will set `${MODE}_MESSAGE` to the given message instead of
-# displaying the message in the log.
-macro(message MODE MESSAGE)
-  if(MOCK_MESSAGE)
-    set(${MODE}_MESSAGE "${MESSAGE}" PARENT_SCOPE)
-    if("${MODE}" STREQUAL FATAL_ERROR)
-      return()
-    endif()
-  else()
-    _message("${MODE}" "${MESSAGE}")
-  endif()
-endmacro()
-
-# Asserts whether the latest message is equal to the expected message.
-#
-# It asserts whether the `${MODE}_MESSAGE` variable set by the `message` function mock
-# is equal to the given expected message.
-#
-# Arguments:
-#   - MODE: The message mode.
-#   - EXPECTED_MESSAGE: The expected message.
-function(assert_message MODE EXPECTED_MESSAGE)
-  if(NOT "${${MODE}_MESSAGE}" STREQUAL "${EXPECTED_MESSAGE}")
-    set(MOCK_MESSAGE OFF)
-    message(FATAL_ERROR "it should receive a ${MODE} message containing '${EXPECTED_MESSAGE}' but instead got '${${MODE}_MESSAGE}'")
-  endif()
-endfunction()
-
 # Asserts whether the given path is a Git directory.
 #
 # It asserts whether the given path exists, is a directory, and contains a Git repository.

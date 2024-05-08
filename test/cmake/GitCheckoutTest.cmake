@@ -1,6 +1,12 @@
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+cmake_minimum_required(VERSION 3.5)
 
-include(Assertion)
+file(
+  DOWNLOAD https://threeal.github.io/assertion-cmake/main ${CMAKE_CURRENT_BINARY_DIR}/Assertion.cmake
+  EXPECTED_MD5 3c9c0dd5e971bde719d7151c673e08b4
+)
+include(${CMAKE_CURRENT_BINARY_DIR}/Assertion.cmake)
+
+include(${CMAKE_CURRENT_LIST_DIR}/Assertion.cmake)
 include(GitCheckout)
 
 function(test_check_out_a_git_repository)
@@ -46,8 +52,9 @@ function(test_check_out_a_git_repository_on_a_specific_invalid_ref)
     file(REMOVE_RECURSE project-starter)
   endif()
 
-  set(MOCK_MESSAGE ON)
-  git_checkout(https://github.com/threeal/project-starter REF invalid-ref)
+  mock_message()
+    git_checkout(https://github.com/threeal/project-starter REF invalid-ref)
+  end_mock_message()
 
   assert_message(FATAL_ERROR "Failed to check out '${CMAKE_CURRENT_BINARY_DIR}/project-starter' to 'invalid-ref' (1)")
 endfunction()

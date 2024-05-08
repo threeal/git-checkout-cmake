@@ -1,6 +1,12 @@
-list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+cmake_minimum_required(VERSION 3.5)
 
-include(Assertion)
+file(
+  DOWNLOAD https://threeal.github.io/assertion-cmake/v0.1.0 ${CMAKE_CURRENT_BINARY_DIR}/Assertion.cmake
+  EXPECTED_MD5 3c9c0dd5e971bde719d7151c673e08b4
+)
+include(${CMAKE_CURRENT_BINARY_DIR}/Assertion.cmake)
+
+include(${CMAKE_CURRENT_LIST_DIR}/Assertion.cmake)
 include(GitCheckout)
 
 function(test_incompletely_clone_a_Git_repository)
@@ -26,15 +32,17 @@ function(test_incompletely_clone_a_git_repository_into_an_existing_path)
   endif()
   file(TOUCH project-starter)
 
-  set(MOCK_MESSAGE ON)
-  _git_incomplete_clone(https://github.com/threeal/project-starter project-starter)
+  mock_message()
+    _git_incomplete_clone(https://github.com/threeal/project-starter project-starter)
+  end_mock_message()
 
   assert_message(FATAL_ERROR "Unable to clone 'https://github.com/threeal/project-starter' to 'project-starter' because the path already exists and is not a Git repository")
 endfunction()
 
 function(test_incompletely_clone_an_invalid_git_repository)
-  set(MOCK_MESSAGE ON)
-  _git_incomplete_clone(https://github.com/threeal/invalid-project invalid-project)
+  mock_message()
+    _git_incomplete_clone(https://github.com/threeal/invalid-project invalid-project)
+  end_mock_message()
 
   assert_message(FATAL_ERROR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
 endfunction()
