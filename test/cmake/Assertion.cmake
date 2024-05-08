@@ -1,5 +1,11 @@
 include_guard(GLOBAL)
 
+file(
+  DOWNLOAD https://threeal.github.io/assertion-cmake/v0.1.0 ${CMAKE_BINARY_DIR}/Assertion.cmake
+  EXPECTED_MD5 3c9c0dd5e971bde719d7151c673e08b4
+)
+include(${CMAKE_BINARY_DIR}/Assertion.cmake)
+
 include(GitCheckout)
 
 # Asserts whether the given path is a Git directory.
@@ -9,13 +15,8 @@ include(GitCheckout)
 # Arguments:
 #   - PATH: The path to check.
 function(_assert_git_directory PATH)
-  if(NOT EXISTS "${PATH}")
-    message(FATAL_ERROR "the '${PATH}' path should exist")
-  endif()
-
-  if(NOT IS_DIRECTORY "${PATH}")
-    message(FATAL_ERROR "the '${PATH}' path should be a directory")
-  endif()
+  assert_exists("${PATH}")
+  assert_directory("${PATH}")
 
   _find_git()
 
@@ -78,9 +79,7 @@ function(assert_git_complete_checkout DIRECTORY)
       OUTPUT_VARIABLE COMMIT_SHA
     )
     string(STRIP "${COMMIT_SHA}" COMMIT_SHA)
-    if(NOT COMMIT_SHA STREQUAL "${ARG_EXPECTED_COMMIT_SHA}")
-      message(FATAL_ERROR "The commit SHA should be '${ARG_EXPECTED_COMMIT_SHA}' but instead got '${COMMIT_SHA}'")
-    endif()
+    assert_strequal("${COMMIT_SHA}" "${ARG_EXPECTED_COMMIT_SHA}")
   endif()
 endfunction()
 

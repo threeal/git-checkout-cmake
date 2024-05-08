@@ -1,11 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
 
-file(
-  DOWNLOAD https://threeal.github.io/assertion-cmake/v0.1.0 ${CMAKE_CURRENT_BINARY_DIR}/Assertion.cmake
-  EXPECTED_MD5 3c9c0dd5e971bde719d7151c673e08b4
-)
-include(${CMAKE_CURRENT_BINARY_DIR}/Assertion.cmake)
-
 include(${CMAKE_CURRENT_LIST_DIR}/Assertion.cmake)
 include(GitCheckout)
 
