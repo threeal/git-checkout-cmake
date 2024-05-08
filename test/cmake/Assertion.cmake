@@ -1,36 +1,12 @@
 include_guard(GLOBAL)
 
+file(
+  DOWNLOAD https://threeal.github.io/assertion-cmake/v0.1.0 ${CMAKE_BINARY_DIR}/Assertion.cmake
+  EXPECTED_MD5 3c9c0dd5e971bde719d7151c673e08b4
+)
+include(${CMAKE_BINARY_DIR}/Assertion.cmake)
+
 include(GitCheckout)
-
-# Mocks the implementation of the `message` function.
-#
-# If `MOCK_MESSAGE` is enabled, it will set `${MODE}_MESSAGE` to the given message instead of
-# displaying the message in the log.
-macro(message MODE MESSAGE)
-  if(MOCK_MESSAGE)
-    set(${MODE}_MESSAGE "${MESSAGE}" PARENT_SCOPE)
-    if("${MODE}" STREQUAL FATAL_ERROR)
-      return()
-    endif()
-  else()
-    _message("${MODE}" "${MESSAGE}")
-  endif()
-endmacro()
-
-# Asserts whether the latest message is equal to the expected message.
-#
-# It asserts whether the `${MODE}_MESSAGE` variable set by the `message` function mock
-# is equal to the given expected message.
-#
-# Arguments:
-#   - MODE: The message mode.
-#   - EXPECTED_MESSAGE: The expected message.
-function(assert_message MODE EXPECTED_MESSAGE)
-  if(NOT "${${MODE}_MESSAGE}" STREQUAL "${EXPECTED_MESSAGE}")
-    set(MOCK_MESSAGE OFF)
-    message(FATAL_ERROR "it should receive a ${MODE} message containing '${EXPECTED_MESSAGE}' but instead got '${${MODE}_MESSAGE}'")
-  endif()
-endfunction()
 
 # Asserts whether the given path is a Git directory.
 #
@@ -39,13 +15,8 @@ endfunction()
 # Arguments:
 #   - PATH: The path to check.
 function(_assert_git_directory PATH)
-  if(NOT EXISTS "${PATH}")
-    message(FATAL_ERROR "the '${PATH}' path should exist")
-  endif()
-
-  if(NOT IS_DIRECTORY "${PATH}")
-    message(FATAL_ERROR "the '${PATH}' path should be a directory")
-  endif()
+  assert_exists("${PATH}")
+  assert_directory("${PATH}")
 
   _find_git()
 
@@ -108,9 +79,7 @@ function(assert_git_complete_checkout DIRECTORY)
       OUTPUT_VARIABLE COMMIT_SHA
     )
     string(STRIP "${COMMIT_SHA}" COMMIT_SHA)
-    if(NOT COMMIT_SHA STREQUAL "${ARG_EXPECTED_COMMIT_SHA}")
-      message(FATAL_ERROR "The commit SHA should be '${ARG_EXPECTED_COMMIT_SHA}' but instead got '${COMMIT_SHA}'")
-    endif()
+    assert_strequal("${COMMIT_SHA}" "${ARG_EXPECTED_COMMIT_SHA}")
   endif()
 endfunction()
 
