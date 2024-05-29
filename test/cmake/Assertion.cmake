@@ -59,7 +59,7 @@ endfunction()
 # Optional arguments:
 #   - EXPECTED_COMMIT_SHA: The expected commit SHA of the checked out Git repository.
 function(assert_git_complete_checkout DIRECTORY)
-  cmake_parse_arguments(ARG "" EXPECTED_COMMIT_SHA "" ${ARGN})
+  cmake_parse_arguments(PARSE_ARGV 1 ARG "" EXPECTED_COMMIT_SHA "")
 
   _assert_git_directory("${DIRECTORY}")
 
