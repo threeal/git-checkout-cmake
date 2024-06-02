@@ -1,8 +1,9 @@
 include_guard(GLOBAL)
 
 file(
-  DOWNLOAD https://threeal.github.io/assertion-cmake/v0.1.0 ${CMAKE_BINARY_DIR}/Assertion.cmake
-  EXPECTED_MD5 3c9c0dd5e971bde719d7151c673e08b4
+  DOWNLOAD https://threeal.github.io/assertion-cmake/v0.2.0
+    ${CMAKE_BINARY_DIR}/Assertion.cmake
+  EXPECTED_MD5 4ee0e5217b07442d1a31c46e78bb5fac
 )
 include(${CMAKE_BINARY_DIR}/Assertion.cmake)
 
@@ -15,8 +16,8 @@ include(GitCheckout)
 # Arguments:
 #   - PATH: The path to check.
 function(_assert_git_directory PATH)
-  assert_exists("${PATH}")
-  assert_directory("${PATH}")
+  assert(EXISTS "${PATH}")
+  assert(IS_DIRECTORY "${PATH}")
 
   _find_git()
 
@@ -79,7 +80,7 @@ function(assert_git_complete_checkout DIRECTORY)
       OUTPUT_VARIABLE COMMIT_SHA
     )
     string(STRIP "${COMMIT_SHA}" COMMIT_SHA)
-    assert_strequal("${COMMIT_SHA}" "${ARG_EXPECTED_COMMIT_SHA}")
+    assert(COMMIT_SHA STREQUAL ARG_EXPECTED_COMMIT_SHA)
   endif()
 endfunction()
 
