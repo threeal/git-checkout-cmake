@@ -79,7 +79,7 @@ endfunction()
 #   - REF: The reference (branch, tag, or commit) to check out the Git repository.
 #   - SPARSE_CHECKOUT: A list of files to check out sparsely.
 function(git_checkout URL)
-  cmake_parse_arguments(ARG "" "DIRECTORY;REF" "SPARSE_CHECKOUT" ${ARGN})
+  cmake_parse_arguments(PARSE_ARGV 1 ARG "" "DIRECTORY;REF" "SPARSE_CHECKOUT")
 
   _get_git_checkout_directory("${URL}" "${ARG_DIRECTORY}" ARG_DIRECTORY)
 
