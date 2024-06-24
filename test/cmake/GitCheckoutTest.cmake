@@ -46,11 +46,9 @@ function("Check out a Git repository on a specific invalid ref")
     file(REMOVE_RECURSE project-starter)
   endif()
 
-  mock_message()
-    git_checkout(https://github.com/threeal/project-starter REF invalid-ref)
-  end_mock_message()
-
-  assert_message(FATAL_ERROR "Failed to check out '${CMAKE_CURRENT_BINARY_DIR}/project-starter' to 'invalid-ref' (1)")
+  assert_fatal_error(
+    CALL git_checkout https://github.com/threeal/project-starter REF invalid-ref
+    MESSAGE "Failed to check out '${CMAKE_CURRENT_BINARY_DIR}/project-starter' to 'invalid-ref' (1)")
 endfunction()
 
 function("Check out a Git repository into an existing Git directory on a specific ref")
