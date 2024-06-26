@@ -7,6 +7,7 @@ file(
 )
 include(${CMAKE_BINARY_DIR}/Assertion.cmake)
 
+find_package(GitCheckout REQUIRED PATHS ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
 include(GitCheckout)
 
 # Asserts whether the given path is a Git directory.
