@@ -30,7 +30,6 @@ This module can be integrated into a CMake project in the following ways:
 - Use [CPM.cmake](https://github.com/cpm-cmake/CPM.cmake) to add this package to the CMake project:
   ```cmake
   cpmaddpackage(gh:threeal/git-checkout-cmake@1.1.0)
-  include(${GitCheckout_SOURCE_DIR}/cmake/GitCheckout.cmake)
   ```
 
 ## Example Usages
