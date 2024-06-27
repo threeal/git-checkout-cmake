@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
 include(${CMAKE_CURRENT_LIST_DIR}/Assertion.cmake)
-include(GitCheckout)
+
+find_package(GitCheckout REQUIRED PATHS ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
 
 function("Incompletely clone a Git repository")
   if(EXISTS project-starter)

@@ -5,7 +5,7 @@ file(
 )
 include(${CMAKE_BINARY_DIR}/Assertion.cmake)
 
-include(GitCheckout)
+find_package(GitCheckout REQUIRED PATHS ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
 
 function("Find the Git executable")
   _find_git()
