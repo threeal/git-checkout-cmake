@@ -27,19 +27,15 @@ function("Incompletely clone a Git repository into an existing path")
   endif()
   file(TOUCH project-starter)
 
-  mock_message()
-    _git_incomplete_clone(https://github.com/threeal/project-starter project-starter)
-  end_mock_message()
-
-  assert_message(FATAL_ERROR "Unable to clone 'https://github.com/threeal/project-starter' to 'project-starter' because the path already exists and is not a Git repository")
+  assert_fatal_error(
+    CALL _git_incomplete_clone https://github.com/threeal/project-starter project-starter
+    MESSAGE "Unable to clone 'https://github.com/threeal/project-starter' to 'project-starter' because the path already exists and is not a Git repository")
 endfunction()
 
 function("Incompletely clone an invalid Git repository")
-  mock_message()
-    _git_incomplete_clone(https://github.com/threeal/invalid-project invalid-project)
-  end_mock_message()
-
-  assert_message(FATAL_ERROR "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
+  assert_fatal_error(
+    CALL _git_incomplete_clone https://github.com/threeal/invalid-project invalid-project
+    MESSAGE "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
 endfunction()
 
 cmake_language(CALL "${TEST_COMMAND}")
