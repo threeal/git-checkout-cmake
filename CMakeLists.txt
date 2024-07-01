@@ -8,12 +8,13 @@ project(
   LANGUAGES NONE
 )
 
+option(GIT_CHECKOUT_ENABLE_TESTS "Enable test targets.")
 option(GIT_CHECKOUT_ENABLE_INSTALL "Enable install targets."
   "${PROJECT_IS_TOP_LEVEL}")
 
 include(cmake/GitCheckout.cmake)
 
-if(PROJECT_IS_TOP_LEVEL AND BUILD_TESTING)
+if(GIT_CHECKOUT_ENABLE_TESTS)
   enable_testing()
   add_subdirectory(test)
 endif()
