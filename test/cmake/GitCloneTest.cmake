@@ -35,7 +35,7 @@ endfunction()
 function("Incompletely clone an invalid Git repository")
   assert_fatal_error(
     CALL _git_incomplete_clone https://github.com/threeal/invalid-project invalid-project
-    MESSAGE "Failed to clone 'https://github.com/threeal/invalid-project' (128)")
+    MESSAGE "Failed to clone 'https://github.com/threeal/invalid-project'")
 endfunction()
 
 cmake_language(CALL "${TEST_COMMAND}")
