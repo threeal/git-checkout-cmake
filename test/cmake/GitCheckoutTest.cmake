@@ -4,7 +4,7 @@ include(${CMAKE_CURRENT_LIST_DIR}/Assertion.cmake)
 
 find_package(GitCheckout REQUIRED PATHS ${CMAKE_CURRENT_LIST_DIR}/../../cmake)
 
-function("Check out a Git repository")
+section("it should check out a Git repository")
   if(EXISTS project-starter)
     file(REMOVE_RECURSE project-starter)
   endif()
@@ -12,7 +12,7 @@ function("Check out a Git repository")
   git_checkout(https://github.com/threeal/project-starter)
 
   assert_git_complete_checkout(project-starter)
-endfunction()
+endsection()
 
 function("Check out a Git repository into an existing Git directory")
   cmake_language(CALL "Check out a Git repository")
